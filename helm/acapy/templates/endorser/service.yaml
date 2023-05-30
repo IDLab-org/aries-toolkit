@@ -1,0 +1,34 @@
+{{- with .Values.agents.endorser }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ $.Values.namespace }}
+  name: {{ .name }}
+spec:
+  selector:
+    app: {{ .name }}
+  ports:
+    - name: "admin"
+      protocol: TCP
+      port: {{ $.Values.acapy_ports.admin }}
+      targetPort: {{ $.Values.acapy_ports.admin }}
+    - name: "inbound"
+      protocol: TCP
+      port: {{ $.Values.acapy_ports.inbound }}
+      targetPort: {{ $.Values.acapy_ports.inbound }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ $.Values.namespace }}
+  name: {{ .name }}-wallet
+spec:
+  selector:
+    app: {{ .name }}-wallet
+  ports:
+    - name: "postgres"
+      protocol: TCP
+      port: {{ $.Values.postgres_port }}
+      targetPort: {{ $.Values.postgres_port }}
+{{- end }}

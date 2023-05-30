@@ -1,0 +1,82 @@
+{{- with .Values.agents.author }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ $.Values.namespace }}
+  name: {{ .name }}
+  labels:
+    app: {{ .name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .name }}
+    spec:
+      containers:
+        - name: {{ .name }}
+          image: {{ $.Values.acapy_image }}
+          imagePullPolicy: Always
+          command: ["aca-py", "start"]
+          args: 
+            - "--admin"
+            - "0.0.0.0"
+            - "{{ $.Values.acapy_ports.admin }}"
+            - "--inbound-transport"
+            - "http"
+            - "0.0.0.0"
+            - "{{ $.Values.acapy_ports.inbound }}"
+            - "--outbound-transport"
+            - "http"
+          ports:
+            - containerPort: {{ $.Values.acapy_ports.admin }}
+            - containerPort: {{ $.Values.acapy_ports.inbound }}
+          envFrom:
+            - secretRef:
+                name: {{ .name }}-env
+          volumeMounts:
+            - mountPath: /data
+              name: "data"
+      volumes:
+        - name: "data"
+          emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ $.Values.namespace }}
+  name: {{ .name }}-wallet
+  labels:
+    app: {{ .name }}-wallet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .name }}-wallet
+  template:
+    metadata:
+      labels:
+        app: {{ .name }}-wallet
+    spec:
+      containers:
+        - name: {{ .name }}-wallet
+          image: {{ $.Values.postgres_image }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: {{ $.Values.postgres_port }}
+          env:
+            - name: POSTGRES_USER
+              value: {{ .wallet.user }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .wallet.password }}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: "{{ .name }}-data"
+      volumes:
+        - name: "{{ .name }}-data"
+          emptyDir: {}
+{{- end }}

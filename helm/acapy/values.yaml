@@ -1,0 +1,34 @@
+---
+app_domain: ""
+env_name: development
+
+postgresql_admin_password: ""
+postgresql_database_name: ""
+postgresql_name: ""
+postgresql_password: ""
+postgresql_port: 5432
+postgresql_role: ""
+postgresql_volume_size: 1Gi
+storage_class_name: gp2
+
+image_url: ""
+genesis_url: ""
+tails_url: ""
+acapy_image: ""
+acapy_ports:
+  admin: 8001
+  inbound: 8002
+
+
+
+agents:
+  endorser:
+    app_subdomain: endorser
+    app_name: acapy-endorser
+    app_group: acapy-agents
+    label: Accréditeur MCN (Dev)
+  author:
+    app_subdomain: author
+    app_name: acapy-author
+    app_group: acapy-agents
+    label: Auteur MCN (Dev)
