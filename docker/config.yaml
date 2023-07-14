@@ -1,0 +1,39 @@
+---
+# aca-py start --arg-file ./config_endorser.yaml -it http 0.0.0.0 3021
+endpoint: ""
+inbound-transport: ["http", "0.0.0.0", "3021"]
+outbound-transport: http
+admin-insecure-mode: True
+admin: ["0.0.0.0", "3022"]
+# no-ledger: True
+genesis-url: ""
+label: "Demo Endorser Agent"
+# image-url: ""
+seed: ""
+
+wallet-storage-type: default
+wallet-type: askar
+wallet-name: demo_wallet
+wallet-key: ""
+
+tails-server-base-url: https://tails.vonx.io
+
+emit-new-didcomm-prefix: True
+emit-new-didcomm-mime-type: True
+
+auto-provision: True
+auto-ping-connection: True
+auto-accept-intro-invitation-requests: True
+auto-accept-invites: True
+auto-accept-requests: True
+auto-respond-messages: True
+auto-respond-credential-proposal: True
+auto-respond-credential-offer: True
+auto-respond-credential-request: True
+auto-respond-presentation-proposal: True
+auto-respond-presentation-request: True
+auto-store-credential: True
+auto-verify-presentation: True
+
+endorser-protocol-role: endorser
+auto-endorse-transactions: True

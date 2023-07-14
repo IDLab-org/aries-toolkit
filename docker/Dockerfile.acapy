@@ -9,4 +9,6 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN pip install --upgrade pip
 RUN pip install aries-cloudagent aries-askar indy-vdr indy-credx
 
-CMD ["aca-py", "--version"]
+COPY config.yaml ./config.yaml
+
+CMD ["aca-py", "start", "--arg-file", "./config.yaml", "-it", "http", "0.0.0.0", "3021"]
